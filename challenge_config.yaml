@@ -19,8 +19,8 @@ leaderboard:
   - id: 1
     schema:
       {
-        "labels": ["Metric1"],
-        "default_order_by": "Total",
+        "labels": "Metric1",
+        "default_order_by": "Metric1",
         "metadata": {
           "Metric1": {
             "sort_ascending": True,

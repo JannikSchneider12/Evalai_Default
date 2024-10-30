@@ -54,9 +54,14 @@ if "SAVE_DIR" not in os.environ:
 # See https://evalai.readthedocs.io/en/latest/evaluation_scripts.html#writing-remote-evaluation-script
 auth_token = os.environ["AUTH_TOKEN"]
 evalai_api_server = os.environ["API_SERVER"]
-queue_name = "embed2scale-challenge-test2--2389-production-c43a1f6e-35a3-4e13-b1ef-14f7fa771e6"
-challenge_pk = "2389" #os.environ["CHALLENGE_PK"]
+queue_name = "random-number-generator-challenge-2393-production-a5c8f02d-288a-4d13-926a-33b4c1"
+challenge_pk = "2393" #os.environ["CHALLENGE_PK"]
 save_dir = os.environ.get("SAVE_DIR", "./")
+
+print(f'auth_token: {auth_token}')
+print(f'evalai_api_server: {evalai_api_server}')
+print(f'queue_name: {queue_name}')
+print(f'save_dir: {save_dir}')
 
 
 def download(submission, save_dir):
@@ -119,6 +124,7 @@ if __name__ == "__main__":
         # Get the message from the queue
         message = evalai.get_message_from_sqs_queue()
         message_body = message.get("body")
+        print(f'message_body: {message_body}')
         if message_body:
             submission_pk = message_body.get("submission_pk")
             challenge_pk = message_body.get("challenge_pk")
@@ -138,10 +144,12 @@ if __name__ == "__main__":
                 if submission.get("status") == "submitted":
                     update_running(evalai, submission_pk)
                 submission_file_path = download(submission, save_dir)
+                print('download successful')
                 try:
                     results = evaluate(
                         submission_file_path, challenge_phase["codename"]
                     )
+                    print(f'results: {results}')
                     update_finished(
                         evalai, phase_pk, submission_pk, json.dumps(results["result"])
                     )
